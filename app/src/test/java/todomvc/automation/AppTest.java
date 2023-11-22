@@ -4,55 +4,24 @@
 package todomvc.automation;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.chrome.ChromeDriver;
 import java.io.File;
 import org.openqa.selenium.OutputType;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class AppTest {
-    @Test
-    public void appHasAGreeting() {
-        App classUnderTest = new App();
-    }
-    public static void main(String[] args) throws Exception{
-
-        // Create a new instance of Selenium
-        WebDriverManager.chromedriver().setup();
-
-        // Use WebDriver to open a new instance of Chrome
-        System.setProperty("webdriver.http.factory", "jdk-http-client");
-        WebDriver driver = new ChromeDriver();
-
-        // Instruct the driver to browse to the Makers website
-        driver.get("https://makers.tech");
-
-        // Take a screenshot of what's currently on the page,
-        // and store it in a file 'makers.png' in your project root
-        takeScreenshot(driver, "makers.png");
-
-        // Find the title of the webpage (the value inside the HTML
-        // <title> element) and print it to the terminal
-        System.out.println(driver.getTitle());
-
-        // Close down Selenium and end the test
-        driver.quit();
-    }
-    public static void takeScreenshot(WebDriver webdriver,String desiredPath) throws Exception{
-        TakesScreenshot screenshot = ((TakesScreenshot)webdriver);
-        File screenshotFile = screenshot.getScreenshotAs(OutputType.FILE);
-        File targetFile = new File(desiredPath);
-        FileUtils.copyFile(screenshotFile, targetFile);
-    }
-
+    private static ChromeDriver driver;
 
 
     @BeforeAll
     static void launchBrowser() {
-        Object WebDriverManager;
-        WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver();
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
     }
 
     // Your tests will go here!
