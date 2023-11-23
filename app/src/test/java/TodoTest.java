@@ -81,18 +81,18 @@ public class TodoTest {
         assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
     }
 
-//    @Test
-//    void addItemWithEmojiAndAssertTrue() {
-//        js = (JavascriptExecutor) driver;
-//        vars = new HashMap<String, Object>();
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
-//        addTodo.sendKeys("Clean 🤨");
-//        addTodo.sendKeys(Keys.ENTER);
-//        WebElement newTodo = driver.findElement(By.className("todo-list"));
-//        assertEquals("Clean 🤨", newTodo.getText());
-//        assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
-//    }
+    @Test
+    void addItemWithEmojiAndAssertTrue() {
+        js = (JavascriptExecutor) driver;
+        vars = new HashMap<String, Object>();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        addTodo.sendKeys("Clean" + "U+1F600");
+        addTodo.sendKeys(Keys.ENTER);
+        WebElement newTodo = driver.findElement(By.className("todo-list"));
+        assertEquals("Clean" + "U+1F600", newTodo.getText());
+        assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
+    }
 
 //    @Test
 //    void addItemWithEmptyValue() {
