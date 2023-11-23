@@ -135,6 +135,25 @@ public class TodoTest {
         assertTrue(clearCompletedLink.isDisplayed());
 
     }
+//    @Test
+//    void clearCompleteClickedDeletesItems() {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+//        addTodo.sendKeys("take a break");
+//        addTodo.sendKeys(Keys.ENTER);
+//        addTodo.sendKeys("Énd the zoom call");
+//        addTodo.sendKeys(Keys.ENTER);
+//        WebElement checkbox = driver.findElement(By.cssSelector(".toggle"));
+//        checkbox.click();
+//        checkbox.click();
+//        WebElement clearCompletedLink = driver.findElement(By.cssSelector(".clear-completed"));
+//        clearCompletedLink.click();
+//        addTodo.sendKeys("a fresh new todo list!");
+//        addTodo.sendKeys(Keys.ENTER);
+//        WebElement todoCount = driver.findElement(By.className("todo-count"));
+//        assertEquals("1 item left", todoCount);
+//
+//    }
 
     @AfterAll
     static void closeBrowser() {
