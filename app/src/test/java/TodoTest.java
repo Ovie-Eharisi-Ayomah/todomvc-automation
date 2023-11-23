@@ -10,6 +10,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -96,18 +97,15 @@ public class TodoTest {
         assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
     }
 
-//    @Test
-//    void addItemWithEmptyValue() {
-////        WebElement addTodo = driver.findElement(By.cssSelector(".new-todo"));
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
-//        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
-//        addTodo.sendKeys(Keys.SPACE);
-//        addTodo.sendKeys(Keys.ENTER);
-//        List<WebElement> newTodo = (List<WebElement>) driver.findElement(By.className("todo-list"));
-////        System.out.println(newTodo.getText())
-//        assertTrue(newTodo.isEmpty());
-////        assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
-//    }
+    @Test
+    void addItemWithEmptyValue() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        addTodo.sendKeys("Clean");
+        addTodo.sendKeys(Keys.ENTER);
+        addTodo.sendKeys(Keys.SPACE);
+        addTodo.sendKeys(Keys.ENTER);
+        assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
 
     @Test
     void characterLimit() {
@@ -136,6 +134,48 @@ public class TodoTest {
 
     }
 
+    }
+
+    @Test
+    void modifyATodoItemDoubleClick() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        addTodo.sendKeys("Clean");
+        addTodo.sendKeys(Keys.ENTER);
+        addTodo.sendKeys("Énd the zoom call");
+        addTodo.sendKeys(Keys.ENTER);
+
+        {
+            WebElement element = driver.findElement(By.cssSelector("li:nth-child(1) label"));
+            Actions builder = new Actions(driver);
+            builder.doubleClick(element).perform();
+        }
+        driver.findElement(By.cssSelector(".editing > .edit")).sendKeys(" and dirty");
+        driver.findElement(By.cssSelector(".editing > .edit")).sendKeys(Keys.ENTER);
+        assertEquals("Clean and dirty", driver.findElement(By.cssSelector("li:nth-child(1) label")).getText());
+    }
+
+    @Test
+    void statusBarDisplaysNumber() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        addTodo.sendKeys("Clean");
+        addTodo.sendKeys(Keys.ENTER);
+        addTodo.sendKeys("Énd the zoom call");
+        addTodo.sendKeys(Keys.ENTER);
+        assertEquals("2 items left", driver.findElement(By.className("todo-count")).getText());
+        driver.findElement(By.cssSelector("li:nth-child(1) .toggle")).click();
+        assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
+        driver.findElement(By.cssSelector("li:nth-child(2) .toggle")).click();
+        assertEquals("0 items left", driver.findElement(By.className("todo-count")).getText());
+    }
+
+    @Test
+    void statusBarIsHidden() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        assertFalse(driver.findElement(By.className("footer")).isPresent());
+    }
     @AfterAll
     static void closeBrowser() {
         driver.quit();
