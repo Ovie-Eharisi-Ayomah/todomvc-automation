@@ -82,15 +82,17 @@ public class TodoTest {
     }
 
     @Test
-    void addItemWithEmojiAndAssertTrue() {
+    void addItemWithEmojiAndAssertTrue() throws InterruptedException {
         js = (JavascriptExecutor) driver;
         vars = new HashMap<String, Object>();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
-        addTodo.sendKeys("Clean" + "U+1F600");
+        String text = " ⭐";
+        addTodo.sendKeys("Clean" + text);
+        Thread.sleep(3000);
         addTodo.sendKeys(Keys.ENTER);
         WebElement newTodo = driver.findElement(By.className("todo-list"));
-        assertEquals("Clean" + "U+1F600", newTodo.getText());
+        assertEquals("Clean" + text, newTodo.getText());
         assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
     }
 
@@ -106,6 +108,21 @@ public class TodoTest {
 //        assertTrue(newTodo.isEmpty());
 ////        assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
 //    }
+
+    @Test
+    void characterLimit() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        addTodo.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo " +
+                "ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, " +
+                "nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretiu");
+        addTodo.sendKeys(Keys.ENTER);
+        WebElement newTodo = driver.findElement(By.className("todo-list"));
+        assertEquals("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo " +
+                "ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, " +
+                "nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretiu", newTodo.getText());
+
+    }
 
     @AfterAll
     static void closeBrowser() {
