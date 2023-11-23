@@ -123,6 +123,18 @@ public class TodoTest {
                 "nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretiu", newTodo.getText());
 
     }
+    @Test
+    void clearCompleteLinkIsVisible() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        addTodo.sendKeys("take a break");
+        addTodo.sendKeys(Keys.ENTER);
+        WebElement checkbox = driver.findElement(By.cssSelector(".toggle"));
+        checkbox.click();
+        WebElement clearCompletedLink = driver.findElement(By.cssSelector(".clear-completed"));
+        assertTrue(clearCompletedLink.isDisplayed());
+
+    }
 
     @AfterAll
     static void closeBrowser() {
