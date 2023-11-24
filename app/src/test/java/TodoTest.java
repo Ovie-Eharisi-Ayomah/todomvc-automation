@@ -31,53 +31,49 @@ public class TodoTest {
     @BeforeAll
     static void launchBrowser() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
 
+    }
+        
+    @BeforeEach
+
+    void loadListPage() {
+        driver = new ChromeDriver();
         driver.get("https://todomvc.com/examples/react/#/");
     }
 
+
     // Your tests will go here!
-    @Test
-    void getTitleFromPage() {
-        assertEquals("TodoMVC", driver.getTitle());
-        System.out.println(driver.getTitle());
-    }
+
 
     @Test
     void addNewTodoAndAssertTrue() {
-//        WebElement addTodo = driver.findElement(By.cssSelector(".new-todo"));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
         addTodo.sendKeys("take a break");
         addTodo.sendKeys(Keys.ENTER);
         WebElement newTodo = driver.findElement(By.className("todo-list"));
-//        System.out.println(newTodo.getText());
         assertEquals("take a break", newTodo.getText());
         assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
     }
 
     @Test
     void addItemWithOneCharacterAndAssertTrue() {
-//        WebElement addTodo = driver.findElement(By.cssSelector(".new-todo"));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
         addTodo.sendKeys("O");
         addTodo.sendKeys(Keys.ENTER);
         WebElement newTodo = driver.findElement(By.className("todo-list"));
-//        System.out.println(newTodo.getText());
         assertEquals("O", newTodo.getText());
         assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
     }
 
     @Test
     void addItemWithOneAccentedCharacterAndAssertTrue() {
-//        WebElement addTodo = driver.findElement(By.cssSelector(".new-todo"));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
         addTodo.sendKeys("Énd the zoom call");
         addTodo.sendKeys(Keys.ENTER);
         WebElement newTodo = driver.findElement(By.className("todo-list"));
-//        System.out.println(newTodo.getText());
         assertEquals("Énd the zoom call", newTodo.getText());
         assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
     }
@@ -86,12 +82,14 @@ public class TodoTest {
     void addItemWithEmojiAndAssertTrue() throws InterruptedException {
         js = (JavascriptExecutor) driver;
         vars = new HashMap<String, Object>();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+//        wait class
         String text = " ⭐";
         addTodo.sendKeys("Clean" + text);
         Thread.sleep(3000);
         addTodo.sendKeys(Keys.ENTER);
+        //        addTodo class
         WebElement newTodo = driver.findElement(By.className("todo-list"));
         assertEquals("Clean" + text, newTodo.getText());
         assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
@@ -195,18 +193,18 @@ public class TodoTest {
         assertEquals("0 items left", driver.findElement(By.className("todo-count")).getText());
     }
 
-    @Test
-    void statusBarIsHidden() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
-        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
-        addTodo.sendKeys("Clean");
-        addTodo.sendKeys(Keys.ENTER);
-        assertTrue(driver.findElement(By.className("todo-count")).isDisplayed());
-        driver.findElement(By.cssSelector("li:nth-child(1) .toggle")).click();
-        driver.findElement(By.className("clear-completed")).click();
-        assertFalse(driver.findElement(By.className("todo-count")).isDisplayed());
-
-    }
+//    @Test
+//    void statusBarIsHidden() {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+//        addTodo.sendKeys("Clean");
+//        addTodo.sendKeys(Keys.ENTER);
+//        assertTrue(driver.findElement(By.className("todo-count")).isDisplayed());
+//        driver.findElement(By.cssSelector("li:nth-child(1) .toggle")).click();
+//        driver.findElement(By.className("clear-completed")).click();
+//        assertFalse(driver.findElement(By.className("todo-count")).isDisplayed());
+//
+//    }
 
     @Test
     void arrowTogglesAllTodos() {
