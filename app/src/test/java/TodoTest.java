@@ -173,7 +173,29 @@ public class TodoTest {
     void statusBarIsHidden() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
-//        assertFalse(driver.findElement(By.className("footer")).isPresent());
+        addTodo.sendKeys("Clean");
+        addTodo.sendKeys(Keys.ENTER);
+        assertTrue(driver.findElement(By.className("todo-count")).isDisplayed());
+        driver.findElement(By.cssSelector("li:nth-child(1) .toggle")).click();
+        driver.findElement(By.className("clear-completed")).click();
+        assertFalse(driver.findElement(By.className("todo-count")).isDisplayed());
+
+    }
+
+    @Test
+    void arrowTogglesAllTodos() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        addTodo.sendKeys("Clean");
+        addTodo.sendKeys(Keys.ENTER);
+        addTodo.sendKeys("Énd the zoom call");
+        addTodo.sendKeys(Keys.ENTER);
+        assertEquals("2 items left", driver.findElement(By.className("todo-count")).getText());
+        WebElement arrow = driver.findElement(By.cssSelector(".main > label"));
+        arrow.click();
+        assertEquals("0 items left", driver.findElement(By.className("todo-count")).getText());
+        arrow.click();
+        assertEquals("2 items left", driver.findElement(By.className("todo-count")).getText());
     }
     @AfterAll
     static void closeBrowser() {
