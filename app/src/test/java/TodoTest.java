@@ -96,6 +96,7 @@ public class TodoTest {
         assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
     }
 
+<<<<<<< Updated upstream
 //    @Test
 //    void addItemWithEmptyValue() {
 ////        WebElement addTodo = driver.findElement(By.cssSelector(".new-todo"));
@@ -108,6 +109,68 @@ public class TodoTest {
 //        assertTrue(newTodo.isEmpty());
 ////        assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
 //    }
+=======
+    @Test
+    void addItemWithEmptyValue() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+        addTodo.sendKeys("Clean");
+        addTodo.sendKeys(Keys.ENTER);
+        addTodo.sendKeys(Keys.SPACE);
+        addTodo.sendKeys(Keys.ENTER);
+        assertEquals("1 item left", driver.findElement(By.className("todo-count")).getText());
+    }
+        @Test
+        void characterLimit() {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+            WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+            addTodo.sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo " +
+                    "ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, " +
+                    "nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretiu");
+            addTodo.sendKeys(Keys.ENTER);
+            WebElement newTodo = driver.findElement(By.className("todo-list"));
+            assertEquals("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo " +
+                    "ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, " +
+                    "nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretiu", newTodo.getText());
+
+        }
+        @Test
+        void clearCompleteLinkIsVisible() {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+            WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+            addTodo.sendKeys("take a break");
+            addTodo.sendKeys(Keys.ENTER);
+            WebElement checkbox = driver.findElement(By.cssSelector(".toggle"));
+            checkbox.click();
+            WebElement clearCompletedLink = driver.findElement(By.cssSelector(".clear-completed"));
+            assertTrue(clearCompletedLink.isDisplayed());
+
+        }
+
+//        @Test
+//        void clearCompleteClickedDeletesItems() throws InterruptedException {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//        WebElement addTodo = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".new-todo")));
+//        addTodo.sendKeys("take a break");
+//        addTodo.sendKeys(Keys.ENTER);
+//        addTodo.sendKeys("Énd the zoom call");
+//        addTodo.sendKeys(Keys.ENTER);
+//        WebElement checkbox1 = driver.findElement(By.xpath("//input[@class='.toggle' and @type='checkbox' and @data-reactid='.0.1.2.$972daec1-806d-4438-9aa9-9710cd668c36.0.0'"));
+//        checkbox1.click();
+//        Thread.sleep(5000);
+//        WebElement checkbox2 = driver.findElement(By.xpath("//input[@class='.toggle' and @type='checkbox' and @data-reactid='.0.1.2.$beb854cb-336d-42f3-a002-eaa3b3a8b920.0.0'"));
+//        //
+//        checkbox2.click();
+//        Thread.sleep(5000);
+//        WebElement clearCompletedLink = driver.findElement(By.cssSelector(".clear-completed"));
+//        clearCompletedLink.click();
+//        addTodo.sendKeys("a fresh new todo list!");
+//        addTodo.sendKeys(Keys.ENTER);
+//        WebElement todoCount = driver.findElement(By.className("todo-count"));
+//        assertEquals("1 item left", todoCount.getText());
+//    }
+
+>>>>>>> Stashed changes
 
     @Test
     void characterLimit() {
